@@ -34,7 +34,6 @@ void *firstThreadRun(unsigned char *ap_rec_buffer)
 
         snd_pcm_drop(p_capture_handle);
         snd_pcm_close (p_capture_handle);
-        usleep(1000000);
     }
 }
  
@@ -42,7 +41,6 @@ void *secondThreadRun(unsigned char *ap_play_buffer)
 {
     while(1)
     {
-        usleep(1000000);
         printf("start Second Thread\n");
         snd_pcm_t *p_playback_handle;
         snd_pcm_hw_params_t *hw_params;
@@ -65,7 +63,7 @@ void *secondThreadRun(unsigned char *ap_play_buffer)
        printf("녹음된 소리를 재생합니다.\n");
        snd_pcm_prepare(p_playback_handle);
        snd_pcm_writei(p_playback_handle, ap_play_buffer, 1600);
-       usleep(1000000);
+       usleep(10000000);
       // printf("재생을 완료 합니다.\n");
 	
        snd_pcm_drop(p_playback_handle);
@@ -77,7 +75,7 @@ int main()
 {
     pthread_t firstThread, seconThread;
     int threadErr;
-    unsigned char rec_buffer[32000];
+    unsigned char rec_buffer[3200];
     
     // 쓰레드를 만들고 쓰레드 함수 실행
     if(threadErr = pthread_create(&firstThread,NULL,firstThreadRun,rec_buffer))
